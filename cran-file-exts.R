@@ -21,12 +21,3 @@ for (i in seq_along(pkgs)) {
   write(paste0(x, collapse = "\t"), file = "exts.txt", append = TRUE)
   unlink(files[i])
 }
-
-x <- readLines("exts.txt")
-x <- tolower(unlist(strsplit(x, split = "\t")))
-y <- sort(table(x), decreasing = TRUE)
-length(y)
-z <- y[y > 10L]
-sum(z)/sum(y)
-z
-cat(names(z), sep = "\n")
