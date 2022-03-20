@@ -14,6 +14,8 @@ find_ext <- function(path) {
   x[!(x %in% "")]
 }
 
+writeLines(pkgs, "pkgs.txt")
+
 for (i in seq_along(pkgs)) {
   cat("Downloading", i, "/", length(pkgs), "\n")
   curl_download(links[i], destfile = files[i])
