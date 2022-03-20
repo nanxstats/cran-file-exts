@@ -1,7 +1,7 @@
 # Cluster the most frequently used file extensions
 
 library("oneclust")
-library("reactable")
+library("DT")
 
 x <- readLines("exts.txt")
 x <- tolower(unlist(strsplit(x, split = "\t")))
@@ -24,38 +24,16 @@ df <- data.frame(
   "cluster" = dplyr::recode(cl$cluster, `1` = 4, `2` = 3, `3` = 2, `4` = 1)
 )
 
-reactable(
+DT::datatable(
   df,
-  searchable = TRUE,
-  pagination = TRUE,
-  showSortIcon = TRUE,
-  theme = reactableTheme(
-    style = list(
-      fontFamily = "'DM Sans', sans-serif",
-      fontSize = "18px"
+  rownames = FALSE,
+  colnames = c("Extension", "Media Type", "Count", "Cluster")
+) |>
+  formatStyle(
+    "cluster",
+    color = styleEqual(
+      unique(df$cluster), oneclust::cud()[unique(df$cluster)]
     )
-  ),
-  columns = list(
-    ext = colDef(
-      name = "File Extension"
-    ),
-    mime = colDef(
-      name = "Media Type"
-    ),
-    count = colDef(
-      name = "Count",
-      style = list(
-        fontFamily = "'DM Mono', monospace"
-      )
-    ),
-    cluster = colDef(
-      name = "Cluster",
-      style = function(value) {
-        list(
-          color = oneclust::cud(value),
-          fontFamily = "'DM Mono', monospace"
-        )
-      }
-    )
-  )
-)
+  ) |>
+  formatStyle(columns = c(1, 2, 3, 4), fontSize = "16px") |>
+  formatStyle("mime", fontSize = "12px")
