@@ -3,7 +3,7 @@
 library("curl")
 library("tools")
 
-repo <- "https://cran.rstudio.com/"
+repo <- "https://cloud.r-project.org/"
 db <- as.data.frame(available.packages(paste0(repo, "src/contrib/")), stringsAsFactors = FALSE)
 pkgs <- db$Package
 files <- paste0(pkgs, "_", db$Version, ".tar.gz")
